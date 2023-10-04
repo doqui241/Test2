@@ -4,7 +4,6 @@ namespace App\Filament\Widgets;
 
 use App\Models\Employee;
 use Filament\Widgets\ChartWidget;
-use Filament\Facades\Filament;
 use Flowframe\Trend\Trend;
 use Flowframe\Trend\TrendValue;
 
@@ -18,7 +17,7 @@ class EmployeeAdminChart extends ChartWidget
 
     protected function getData(): array
     {
-        $data = Trend::query(Employee::query()->whereBelongsTo(Filament::getTenant()))
+        $data = Trend::model(Employee::class)
             ->between(
                 start: now()->startOfMonth(),
                 end: now()->endOfMonth(),
@@ -36,7 +35,6 @@ class EmployeeAdminChart extends ChartWidget
             'labels' => $data->map(fn (TrendValue $value) => $value->date),
         ];
     }
-
 
     protected function getType(): string
     {
